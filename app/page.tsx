@@ -109,11 +109,6 @@ export default function Home() {
   }, [checkingSession, loggedIn, renderGoogleButton]);
 
   const processFile = useCallback(async (file: File) => {
-    if (!loggedIn) {
-      setError('请先使用 Google 登录');
-      return;
-    }
-
     const allowed = ['image/jpeg', 'image/png', 'image/webp'];
     if (!allowed.includes(file.type)) {
       setError('只支持 JPG、PNG、WebP 格式');
@@ -144,7 +139,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [loggedIn]);
+  }, []);
 
   const onDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -216,19 +211,14 @@ export default function Home() {
 
           {!original && (
             <div
-              className={`border-2 border-dashed rounded-2xl p-16 text-center transition-colors ${
-                dragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'
-              } ${loggedIn ? 'cursor-pointer hover:border-blue-400' : 'cursor-not-allowed opacity-80'}`}
+              className={`border-2 border-dashed rounded-2xl p-16 text-center transition-colors cursor-pointer ${
+                dragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white hover:border-blue-400'
+              }`}
               onClick={() => {
-                if (!loggedIn) {
-                  setError('请先使用右上角 Google 登录');
-                  return;
-                }
                 inputRef.current?.click();
               }}
               onDragOver={(e) => {
                 e.preventDefault();
-                if (!loggedIn) return;
                 setDragging(true);
               }}
               onDragLeave={() => setDragging(false)}
@@ -237,7 +227,7 @@ export default function Home() {
               <div className="text-5xl mb-4">🖼️</div>
               <p className="text-gray-600 text-lg mb-2">拖拽图片到这里，或点击上传</p>
               <p className="text-gray-400 text-sm">支持 JPG、PNG、WebP，最大 10MB</p>
-              {!loggedIn && <p className="mt-3 text-sm text-blue-500">先完成 Google 登录才能开始去背景</p>}
+              {!loggedIn && <p className="mt-3 text-sm text-gray-400">Google 登录是可选的，未登录也能使用</p>}
               <input
                 ref={inputRef}
                 type="file"
@@ -295,7 +285,7 @@ export default function Home() {
             <div className="space-y-4">
               {[
                 { q: '图片会被存储吗？', a: '不会。图片仅在处理时临时传输，不存储在任何服务器上。' },
-                { q: '为什么要先登录？', a: 'Google 登录用于限制滥用，只有登录后才能调用去背景接口。' },
+                { q: '一定要登录吗？', a: '不用。Google 登录是可选的，不登录也可以直接去背景。' },
                 { q: '支持哪些格式？', a: '支持 JPG、PNG、WebP 格式，文件大小不超过 10MB。' },
                 { q: '处理结果是什么格式？', a: '下载的文件是透明背景的 PNG 格式。' },
               ].map((item, i) => (
