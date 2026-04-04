@@ -1,9 +1,22 @@
+import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
   try {
+    const session = request.cookies.get('session')?.value;
+    if (!session) {
+      return NextResponse.json({ error: '请先登录' }, { status: 401 });
+    }
+
+    const secret = process.env.AUTH_SECRET;
+    if (!secret) {
+      return NextResponse.json({ error: '服务配置错误' }, { status: 500 });
+    }
+
+    await jwtVerify(session, new TextEncoder().encode(secret));
+
     const formData = await request.formData();
     const file = formData.get('image') as File;
 

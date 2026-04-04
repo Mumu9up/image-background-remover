@@ -1,41 +1,36 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# image-background-remover
 
-## Getting Started
+AI-powered image background removal tool built with Next.js.
 
-First, run the development server:
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create `.env.local` with:
 
-## Learn More
+```bash
+REMOVE_BG_API_KEY=your_remove_bg_api_key
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id
+AUTH_SECRET=replace_with_a_long_random_string
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Google Login setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+In Google Cloud Console, add:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Authorized JavaScript origins:
+  - `http://localhost:3000`
+  - `https://imagebackgroundremover.asia`
+- Authorized redirect URIs:
+  - This project currently uses Google Identity Services on the frontend and verifies the returned credential on the backend, so no OAuth redirect URI is required for the login flow itself.
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# image-background-remover
-AI-powered image background removal tool (Next.js)
->>>>>>> 52380616a1a67ffdbddc3650edc9bbb3a84820e2
+Set the same environment variables in your deployment platform before publishing.
